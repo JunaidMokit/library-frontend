@@ -1,69 +1,105 @@
-# React + TypeScript + Vite
+# Library Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a full-stack Library Management System built with React, TypeScript, Redux Toolkit (RTK Query), Express, and MongoDB. It allows users to manage a collection of books, including functionality to add, edit, delete, and borrow books, along with viewing a summary of borrowed items.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- View all books in a responsive grid layout
+- Add new books with title, author, genre, ISBN, description, and availability
+- Edit and delete existing books
+- Borrow books by specifying quantity and due date  
+  - Prevent borrowing more than available copies  
+  - Automatically update availability status when no copies left
+- View a borrow summary with total quantity borrowed per book
+- Interactive confirmation dialogs using SweetAlert2
+- Data updates in real-time without page reloads using RTK Query cache invalidation
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React
+- TypeScript
+- Tailwind CSS
+- React Router
+- Redux Toolkit & RTK Query
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Backend
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Express.js
+- MongoDB
+- Mongoose
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## API Endpoints
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Book Management
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `GET /api/books` – Retrieve all books  
+- `POST /api/books` – Add a new book  
+- `PATCH /api/books/:id` – Update a book  
+- `DELETE /api/books/:id` – Delete a book  
+- `GET /api/books/:id` – Get a single book by ID  
+
+### Borrow Management
+
+- `POST /api/borrow` – Borrow a book (reduces copies and updates availability)  
+- `GET /api/borrow` – Aggregated borrow summary  
+
+## Folder Structure
+
+src/
+├── AllBooks/
+├── AddBook/
+├── EditBook/
+├── BorrowBook/
+├── Navbar/
+├── Footer/
+├── Store and Book/
+├── Api/
+├── routes/
+├── App.tsx
+├── main.tsx
+
+
+## Special Logic
+
+- Borrowing logic is validated on both client and server side
+- Borrow summary uses MongoDB aggregation to calculate total borrowed quantity
+- State management handled with Redux Toolkit and queries are auto-synced after any mutation
+
+## Getting Started
+
+### Backend
+
+1. Install dependencies:
+   ```bash
+   npm install
+Start server:
+
+bash
+Copy
+Edit
+npm run dev
+Frontend
+Navigate to the frontend directory:
+
+bash
+Copy
+Edit
+cd library-frontend
+Install dependencies:
+
+bash
+Copy
+Edit
+npm install
+Start frontend:
+
+bash
+Copy
+Edit
+npm run dev
+Deployment Notes
+Make sure CORS is properly configured for your frontend domain in the Express server
+
+MongoDB connection must be active and accessible
