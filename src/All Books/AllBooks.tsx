@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useGetBooksQuery } from "../Api/baseApi";
 import { selectBooks } from "../Store and Book/BookSlice"
 import { useAppSelector } from "../Store and Book/hooks"
@@ -28,7 +29,12 @@ function AllBooks() {
             <p className="text-gray-500 text-sm mt-2">
               Added on: {new Date(book.createdAt).toLocaleDateString()}
             </p>
-            <button className="bg-red-600 p-1 rounded-2xl">Delete</button>
+            <div className="flex space-x-1.5 mt-2">
+              <button className="bg-red-600 p-1 rounded-2xl">Delete</button>
+              <Link to={`/edit-book/${book._id}`}><button className="bg-yellow-600 p-1 rounded-2xl">Edit</button></Link>
+              <button className="bg-green-600 p-1 rounded-2xl">Borrow</button>
+            </div>
+
           </div>
         ))}
       </div>

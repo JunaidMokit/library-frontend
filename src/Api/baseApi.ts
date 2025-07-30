@@ -16,9 +16,21 @@ export const baseApi = createApi(
                 }),
             }),
 
+            getBookById: builder.query({
+                query: (id) => `/books/${id}`,
+            }),
+
+            updateBook: builder.mutation({
+                query: ({ id, ...patch }) => ({
+                    url: `/books/${id}`,
+                    method: "PATCH",
+                    body: patch,
+                }),
+            }),
+
 
         })
     }
 )
 
-export const { useGetBooksQuery, useAddBookMutation } = baseApi;
+export const { useGetBooksQuery, useAddBookMutation, useUpdateBookMutation, useGetBookByIdQuery } = baseApi;
