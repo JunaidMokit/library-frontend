@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useGetBooksQuery } from "../Api/baseApi";
+import { useDeleteBookMutation, useGetBooksQuery } from "../Api/baseApi";
 import { selectBooks } from "../Store and Book/BookSlice"
 import { useAppSelector } from "../Store and Book/hooks"
 import Book from "./Book";
@@ -7,8 +7,20 @@ import Book from "./Book";
 function AllBooks() {
   const books = useAppSelector((state) => selectBooks(state));
   const { data } = useGetBooksQuery(undefined);
+  const [deleteBook] = useDeleteBookMutation();
+
+
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteBook(id).unwrap();
+      alert("Delete Successfully")
+    } catch (error) {
+      alert("Failed to delete book");
+    }
+  };
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="min-h-screen bg-gray-100 py-10 px-4 max-w-7xl m-auto">
       <h1 className="text-3xl font-bold text-center mb-8">Library Books</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -29,11 +41,31 @@ function AllBooks() {
             <p className="text-gray-500 text-sm mt-2">
               Added on: {new Date(book.createdAt).toLocaleDateString()}
             </p>
-            <div className="flex space-x-1.5 mt-2">
-              <button className="bg-red-600 p-1 rounded-2xl">Delete</button>
-              <Link to={`/edit-book/${book._id}`}><button className="bg-yellow-600 p-1 rounded-2xl">Edit</button></Link>
-              <button className="bg-green-600 p-1 rounded-2xl">Borrow</button>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <button
+                onClick={() => handleDelete(book._id)}
+                className="px-4 py-1 bg-red-600 text-white text-sm rounded-full hover:bg-red-700 transition"
+              >
+                Delete
+              </button>
+
+              <Link to={`/edit-book/${book._id}`}>
+                <button
+                  className="px-4 py-1 bg-yellow-500 text-white text-sm rounded-full hover:bg-yellow-600 transition"
+                >
+                  Edit
+                </button>
+              </Link>
+
+              <Link to={`/borrow-book/${book._id}`}>
+                <button
+                  className="px-4 py-1 bg-green-600 text-white text-sm rounded-full hover:bg-green-700 transition"
+                >
+                  Borrow
+                </button>
+              </Link>
             </div>
+
 
           </div>
         ))}
