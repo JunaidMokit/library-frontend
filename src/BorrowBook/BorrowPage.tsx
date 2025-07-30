@@ -19,12 +19,12 @@ export default function BorrowPage() {
             return;
         }
 
-        const updatedCopies = book.copies - quantity;
-        const available = updatedCopies > 0;
+        // const updatedCopies = book.copies - quantity;
+        // const available = updatedCopies > 0;
 
         try {
             await borrowBook({
-                book: id,             // ✅ book ID
+                book: id,
                 quantity,
                 dueDate,
             });

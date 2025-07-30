@@ -1,24 +1,40 @@
 import { Link } from "react-router";
 import { useDeleteBookMutation, useGetBooksQuery } from "../Api/baseApi";
-import { selectBooks } from "../Store and Book/BookSlice"
-import { useAppSelector } from "../Store and Book/hooks"
-import Book from "./Book";
+
+
+import Swal from "sweetalert2";
+
 
 function AllBooks() {
-  const books = useAppSelector((state) => selectBooks(state));
+
   const { data } = useGetBooksQuery(undefined);
   const [deleteBook] = useDeleteBookMutation();
 
 
-
   const handleDelete = async (id: string) => {
-    try {
-      await deleteBook(id).unwrap();
-      alert("Delete Successfully")
-    } catch (error) {
-      alert("Failed to delete book");
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This book will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await deleteBook(id).unwrap();
+        Swal.fire("Deleted!", "The book has been deleted.", "success");
+      } catch (error) {
+        Swal.fire("Error!", "Failed to delete the book.", "error");
+      }
     }
   };
+
+
+
+
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 max-w-7xl m-auto">
       <h1 className="text-3xl font-bold text-center mb-8">Library Books</h1>

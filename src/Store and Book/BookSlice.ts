@@ -1,4 +1,4 @@
-import { createSlice, isAction, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { IBook } from "./BookType";
 import type { RootState } from "./Store";
 
@@ -50,4 +50,6 @@ const bookSlice = createSlice({
 export const selectBooks = (state: RootState) => {
     return state.lib.books;
 }
+
+export const { addBook } = bookSlice.actions;
 export default bookSlice.reducer;

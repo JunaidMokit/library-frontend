@@ -4,7 +4,7 @@ export const baseApi = createApi(
     {
         reducerPath: "baseApi",
         baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api" }),
-        tagTypes: ["Book"],
+        tagTypes: ["Book", "Borrow"],
         endpoints: (builder) => ({
             getBooks: builder.query({
                 query: () => "/books",
@@ -19,6 +19,7 @@ export const baseApi = createApi(
                     method: "POST",
                     body: bookData,
                 }),
+                invalidatesTags: [{ type: "Book", id: "LIST" }],
             }),
 
             getBookById: builder.query({
@@ -31,6 +32,7 @@ export const baseApi = createApi(
                     method: "PATCH",
                     body: patch,
                 }),
+                invalidatesTags: ({ id }) => [{ type: "Book", id }, { type: "Book", id: "LIST" }],
             }),
 
             deleteBook: builder.mutation({
@@ -38,20 +40,21 @@ export const baseApi = createApi(
                     url: `/books/${id}`,
                     method: "DELETE",
                 }),
-                invalidatesTags: (result, error, id) => [{ type: "Book", id }, { type: "Book", id: "LIST" }],
+                invalidatesTags: (id) => [{ type: "Book", id }, { type: "Book", id: "LIST" }],
             }),
 
             borrowBook: builder.mutation({
                 query: (data) => ({
-                    url: "/borrow",     // ✅ Matches your backend POST /api/borrow
+                    url: "/borrow",
                     method: "POST",
                     body: data,
                 }),
-                invalidatesTags: ["Book"],
+                invalidatesTags: ["Book", "Borrow"],
             }),
             getBorrowSummary: builder.query({
-                query: () => "/borrow",  // ✅ use /borrow instead of /borrow-summary
-                invalidatesTags: (result, error, id) => [{ type: "Book", id }, { type: "Book", id: "LIST" }]
+                query: () => "/borrow",
+                providesTags: ["Borrow"],
+
             }),
 
 

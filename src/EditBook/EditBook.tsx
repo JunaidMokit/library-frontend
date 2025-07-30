@@ -41,7 +41,7 @@ export default function EditBook() {
         try {
             await updateBook({ id, ...form }).unwrap();
             alert("Book updated!");
-            navigate("/"); // or wherever you want
+            navigate("/books");
         } catch (err) {
             alert("Failed to update book");
         }

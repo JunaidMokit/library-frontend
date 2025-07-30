@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router";
 import { useAddBookMutation } from "../Api/baseApi";
 import { useState } from "react";
 
 export default function AddBook() {
     const [addBook] = useAddBookMutation();
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         title: "",
@@ -39,6 +41,7 @@ export default function AddBook() {
                 copies: 1,
                 available: true,
             });
+            navigate("/books")
         } catch (err) {
             console.error(err);
             alert("Failed to add book");

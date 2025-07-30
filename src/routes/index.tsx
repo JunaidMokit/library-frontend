@@ -6,7 +6,7 @@ import App from "../App";
 import AllBooks from "../All Books/AllBooks";
 import AddBook from "../AddBook/AddBook";
 import EditBook from "../EditBook/EditBook";
-import DeleteBook from "../DeleteBook/DeleteBook";
+
 import BorrowPage from "../BorrowBook/BorrowPage";
 import BorrowSummary from "../BorrowBook/BorrowSummary";
 
@@ -17,6 +17,11 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             {
+                index: true,
+                element: <AllBooks></AllBooks>
+            },
+            {
+
                 path: "books",
                 element: <AllBooks></AllBooks>
             },
